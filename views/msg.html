@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+</head>
+<style>
+    body {
+        width: 100%;
+        background: url('http://pic1.win4000.com/wallpaper/2018-11-16/5bee6dd460ef1.jpg') no-repeat;
+        background-size: 100%;
+    }
+    
+    .container-fluid {
+        width: 800px;
+        margin: 0 auto;
+    }
+    
+    .form-group {
+        word-wrap: break-word;
+    }
+    
+    .red {
+        color: orangered;
+    }
+    
+    #ul {
+        height: 500px;
+        overflow: scroll;
+        margin-top: 20px;
+    }
+</style>
+
+<body>
+    <div class="container-fluid">
+
+        <div>
+            <h1>欢迎各位老铁</h1>
+            <span style="color:mediumvioletred">当前在线人数：<span id="count" style="font-size:20px;color:mediumblue"></span></span>
+        </div>
+        <hr>
+
+        <div class="list-group">
+            <a href="#" class="list-group-item active">
+             聊天消息框
+            </a>
+            <!-- <div class="form-group" style="margin-top:30px;">
+                <label for="">昵称</label>
+                <input type="text" class="form-control" id="name" name="">
+            </div> -->
+            <div class="form-group" style="margin-top:20px;">
+                <textarea type="textarea" rows="3" cols="10" class="form-control" placeholder="请输入消息" id="msg" name=""></textarea>
+            </div>
+            <div class="form-group">
+                <input type="button" value="发送消息" id="send" class="btn btn-primary">
+
+            </div>
+
+
+        </div>
+
+        <div class="list-group" id="ul">
+
+
+        </div>
+
+
+
+    </div>
+
+
+    <script src="/node_modules/jquery/dist/jquery.min.js "></script>
+    <script>
+        $(function() {
+
+            var ws = new WebSocket('ws://192.168.2.39:3000')
+
+            ws.onopen = function() {
+                console.log('连接服务器了');
+
+            }
+
+            ws.onmessage = function(e) {
+                userInfo = JSON.parse(e.data)
+                console.log(userInfo);
+
+                var html = ` <p href="#" class="list-group-item"><span class="${userInfo.type===2?"red":""}">${userInfo.name}${userInfo.type===2?"":"说"}：</span>${userInfo.msg} <span style="float:right">${userInfo.time}</span></p>`
+                $('#ul').prepend(html)
+                $('#count').text(userInfo.count)
+
+
+            }
+
+            $('#send').on('click', function() {
+                var name = localStorage.getItem('username')
+                    // var name = $('#name').val().trim()
+                var msg = $('#msg').val().trim()
+                if (msg.length <= 0) return alert('请输入内容')
+
+                ws.send(JSON.stringify({
+                    name: name,
+                    msg: msg
+                }))
+
+
+            })
+
+
+
+
+        })
+    </script>
+</body>
+
+</html>
