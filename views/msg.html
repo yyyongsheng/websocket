@@ -77,7 +77,7 @@
     <script>
         $(function() {
 
-            var ws = new WebSocket('ws://192.168.2.39:3000')
+            var ws = new WebSocket('ws://192.168.43.124:3100')
 
             ws.onopen = function() {
                 console.log('连接服务器了');
@@ -101,10 +101,14 @@
                 var msg = $('#msg').val().trim()
                 if (msg.length <= 0) return alert('请输入内容')
 
+              
+
                 ws.send(JSON.stringify({
                     name: name,
                     msg: msg
                 }))
+
+                $('#msg').val('')
 
 
             })

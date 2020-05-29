@@ -64,8 +64,8 @@ wss.broadcast = function broadcast(name, msg, type) {
 
 
 
-baseServer.listen(3000, '192.168.2.39', () => {
+baseServer.listen(3100, () => {
 
-    console.log('server running at http://192.168.2.39:3000');
+    console.log('server running at http://192.168.43.124:3100');
 
 })
